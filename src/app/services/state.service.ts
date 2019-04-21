@@ -19,7 +19,9 @@ export class StateService {
     return this.names;
   }
 
-  setNames() {
-    return this.names;
+  setNames(names: string[]) {
+    this.names = names;
+
+    return names;
   }
 }
