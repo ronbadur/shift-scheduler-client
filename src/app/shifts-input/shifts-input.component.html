@@ -1,3 +1,38 @@
-<p>
-  shifts-input works!
-</p>
+<div class="container">
+  <div class="number-input-container">
+    <label>Insert Number Of Workers:</label>
+    <input type="number" value="1" min="1" class="number-of-inputs number-of-workers" [(ngModel)]="numberOfWorkers">
+  </div>
+  <div class="number-input-container">
+    <label>Insert Number Of Days:</label>
+    <input type="number" value="1" min="1" max="7" class="number-of-inputs number-of-days" [(ngModel)]="numberOfDays">
+  </div>
+  <div class="number-input-container">
+    <label>Insert Number Of Shifts:</label>
+    <input type="number" value="1" min="1" max="5" class="number-of-inputs number-of-shifts"
+           [(ngModel)]="numberOfShifts">
+  </div>
+  <div class="number-input-container">
+    <label>Insert Number Of Necessary Workers Per Shift:</label>
+    <input type="number" value="1" min="1" class="number-of-inputs number-of-necessary-workers-per-shift"
+           [(ngModel)]="numberOfNecessaryWorkersPerShift">
+  </div>
+
+  <table class="data-input">
+    <thead>
+    <th *ngFor="let i of [].constructor(numberOfDays * numberOfShifts); index as index">
+      {{(index % numberOfDays) + 1}}
+    </th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let i of [].constructor(numberOfWorkers)">
+      <td *ngFor="let i of [].constructor(numberOfDays * numberOfShifts); index as index">
+      </td>
+    </tr>
+    </tbody>
+    <!--<div *ngFor="let i of [].constructor(numberOfWorkers)">-->
+    <!--<div class="worker-data-container">-->
+    <!--</div>-->
+    <!--</div>-->
+  </table>
+</div>

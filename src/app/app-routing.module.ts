@@ -1,10 +1,19 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { AppComponent } from './app.component';
+import { ShiftsInputComponent } from './shifts-input/shifts-input.component';
+import { ShiftsResultComponent } from './shifts-result/shifts-result.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path: '', component: AppComponent},
+  {path: 'home', redirectTo: '', component: AppComponent},
+  {path: 'shifts-input', component: ShiftsInputComponent},
+  {path: 'shifts-result', component: ShiftsResultComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

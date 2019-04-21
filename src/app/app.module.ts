@@ -7,6 +7,7 @@ import { ShiftsInputComponent } from './shifts-input/shifts-input.component';
 import { ShiftsResultComponent } from './shifts-result/shifts-result.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
