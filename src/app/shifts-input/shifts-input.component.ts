@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlgorithmService } from '../services/algorithm.service';
 import { StateService } from '../services/state.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shifts-input',
@@ -38,7 +39,8 @@ export class ShiftsInputComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private algorithmService: AlgorithmService,
-              private stateService: StateService) {
+              private stateService: StateService,
+              private router: Router) {
     this.rebuildForm();
   }
 
@@ -55,7 +57,7 @@ export class ShiftsInputComponent implements OnInit {
 
     for (let i = 0; i < this.numberOfWorkers; i++) {
       this.shiftsInputForm.registerControl(`worker-${i}`, new FormControl(
-        '',
+        `generated-${i}`,
         Validators.required
       ));
 
@@ -92,6 +94,8 @@ export class ShiftsInputComponent implements OnInit {
 
       this.stateService.setNames(Object.keys(formValue).filter(key => key.startsWith('worker-')).map(key => formValue[key]));
       this.stateService.setResult(res);
+
+      this.router.navigate(['shifts-result']);
     }).catch((err) => {
       console.log(err);
     });
