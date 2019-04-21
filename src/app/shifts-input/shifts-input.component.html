@@ -31,6 +31,11 @@
       </mat-form-field>
     </div>
   </div>
+
+  <section class="call-for-action">
+    <button mat-raised-button color="primary" (click)="submit()">Submit!</button>
+  </section>
+
   <table class="data-input">
     <thead>
     <th></th>
@@ -72,10 +77,6 @@
     </tr>
     </tbody>
   </table>
-
-  <section class="call-for-action">
-    <button mat-raised-button color="primary" (click)="submit()">Submit!</button>
-  </section>
 </form>
 <div class="loading-container">
   <ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="large">

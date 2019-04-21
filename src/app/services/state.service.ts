@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StateService {
   result: number[][][];
   shiftsData = {workers: 0, days: 0, shifts: 0};

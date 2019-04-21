@@ -9,13 +9,10 @@ import { StateService } from '../services/state.service';
 })
 export class ShiftsResultComponent implements OnInit {
   result: number[][][];
-  shiftsData = {workers: 0, days: 0, shifts: 0};
+  shiftsData;
   names: string[];
 
   ngOnInit(): void {
-    this.result = this.stateService.getResult();
-    this.shiftsData = this.stateService.getShiftsData();
-    this.names = this.stateService.getNames();
   }
 
   resultOptions = [
@@ -34,10 +31,15 @@ export class ShiftsResultComponent implements OnInit {
   ];
 
   getCurrentValue(worker: number, relativeShift: number) {
-    return this.result[worker][relativeShift / this.shiftsData.shifts][relativeShift % this.shiftsData.shifts]
+    console.log(worker);
+    console.log(relativeShift);
+    return this.result[worker][Math.floor(relativeShift / this.shiftsData.shifts)][relativeShift % this.shiftsData.shifts];
   }
 
   constructor(private stateService: StateService,
               private router: Router) {
+    this.result = this.stateService.getResult();
+    this.shiftsData = this.stateService.getShiftsData();
+    this.names = this.stateService.getNames();
   }
 }

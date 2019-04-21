@@ -19,22 +19,15 @@
         {{names[worker]}}
       </td>
       <td *ngFor="let j of [].constructor(shiftsData.days * shiftsData.shifts); index as relativeShift">
-        <mat-select>
-          <mat-select-trigger>
-            <div class="{{resultOptions[getCurrentValue(worker, relativeShift)].color}}">
-              <mat-icon>
-                {{resultOptions[getCurrentValue(worker, relativeShift)].icon}}
-              </mat-icon>&nbsp;
-            </div>
-          </mat-select-trigger>
-          <mat-option *ngFor="let availability of availabilities" [value]="availability">
-            <div class="{{availability.color}}">
-              <mat-icon>{{availability.icon}}</mat-icon>
-            </div>
-          </mat-option>
-        </mat-select>
+        <div class="{{resultOptions[getCurrentValue(worker, relativeShift)].color}}">
+          <mat-icon>
+            {{resultOptions[getCurrentValue(worker, relativeShift)].icon}}
+          </mat-icon>&nbsp;
+        </div>
       </td>
     </tr>
     </tbody>
   </table>
 </form>
+
+<p class="line-1 anim-typewriter">Thanks for using ShiftsScheduler!&nbsp;&nbsp;:)</p>
