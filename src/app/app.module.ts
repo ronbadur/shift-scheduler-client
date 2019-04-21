@@ -7,9 +7,10 @@ import { AppComponent } from "./app.component";
 import { ShiftsInputComponent } from "./shifts-input/shifts-input.component";
 import { ShiftsResultComponent } from "./shifts-result/shifts-result.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
-  declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent],
+  declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent, LandingPageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
