@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { AlgorithmService } from '../services/algorithm.service';
 import { StateService } from '../services/state.service';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-shifts-input',
@@ -40,7 +41,8 @@ export class ShiftsInputComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private algorithmService: AlgorithmService,
               private stateService: StateService,
-              private router: Router) {
+              private router: Router,
+              private spinner: NgxSpinnerService) {
     this.rebuildForm();
   }
 
@@ -84,12 +86,14 @@ export class ShiftsInputComponent implements OnInit {
   }
 
   submit() {
+    this.spinner.show();
     const formValue = this.shiftsInputForm.getRawValue();
 
     this.algorithmService.runAlgorithm({
       constraints: this.extractConstraints(formValue),
       necessaryWorkers: this.numberOfNecessaryWorkersPerShift
     }).then((res) => {
+      this.spinner.hide();
       console.log(res);
 
       this.stateService.setNames(Object.keys(formValue).filter(key => key.startsWith('worker-')).map(key => formValue[key]));
@@ -147,5 +151,12 @@ export class ShiftsInputComponent implements OnInit {
     }
 
     return constraintsMock;
+  }
+
+  showSpinner() {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 5000);
   }
 }
