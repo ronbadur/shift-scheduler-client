@@ -10,9 +10,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
-  declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent],
+  declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent, LandingPageComponent],
   imports: [
     BrowserModule,
     CommonModule,
