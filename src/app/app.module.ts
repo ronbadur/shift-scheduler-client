@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShiftsInputComponent } from './shifts-input/shifts-input.component';
 import { ShiftsResultComponent } from './shifts-result/shifts-result.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -14,9 +16,13 @@ import { ShiftsResultComponent } from './shifts-result/shifts-result.component';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
