@@ -90,10 +90,13 @@ export class ShiftsInputComponent implements OnInit {
       constraints: this.extractConstraints(formValue),
       necessaryWorkers: this.numberOfNecessaryWorkersPerShift
     }).then((res) => {
-      console.log(res);
-
       this.stateService.setNames(Object.keys(formValue).filter(key => key.startsWith('worker-')).map(key => formValue[key]));
-      this.stateService.setResult(res);
+      this.stateService.setShiftsData({
+        workers: this.numberOfWorkers,
+        days: this.numberOfDays,
+        shifts: this.numberOfShifts
+      });
+      this.stateService.setResult(res.data);
 
       this.router.navigate(['shifts-result']);
     }).catch((err) => {

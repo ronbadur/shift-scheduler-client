@@ -1,32 +1,29 @@
-<form class="container" [formGroup]="shiftsInputForm">
+<form class="container">
   <table class="data-input">
     <thead>
     <th></th>
-    <th *ngFor="let i of [].constructor(numberOfDays); index as currentDay" [attr.colspan]="numberOfShifts"
+    <th *ngFor="let i of [].constructor(shiftsData.days); index as currentDay" [attr.colspan]="shiftsData.shifts"
         class="day-header">
       {{days[currentDay]}}
     </th>
     </thead>
     <thead>
     <th>Name</th>
-    <th *ngFor="let i of [].constructor(numberOfDays * numberOfShifts); index as index">
-      {{(index % numberOfShifts) + 1}}
+    <th *ngFor="let i of [].constructor(shiftsData.days * shiftsData.shifts); index as index">
+      {{(index % shiftsData.shifts) + 1}}
     </th>
     </thead>
     <tbody>
-    <tr *ngFor="let i of [].constructor(numberOfWorkers); index as worker">
+    <tr *ngFor="let i of [].constructor(shiftsData.workers); index as worker">
       <td>
-        <mat-form-field>
-          <input formControlName="{{'worker-' + worker}}" matInput class="input name-input" type="text">
-        </mat-form-field>
+        {{names[worker]}}
       </td>
-      <td *ngFor="let j of [].constructor(numberOfDays * numberOfShifts); index as relativeShift"
-          class="{{getShiftString(worker, relativeShift)}}">
-        <mat-select formControlName="{{getShiftString(worker, relativeShift)}}">
+      <td *ngFor="let j of [].constructor(shiftsData.days * shiftsData.shifts); index as relativeShift">
+        <mat-select>
           <mat-select-trigger>
-            <div class="{{getCurrentValue(worker, relativeShift).color}}">
+            <div class="{{resultOptions[getCurrentValue(worker, relativeShift)].color}}">
               <mat-icon>
-                {{getCurrentValue(worker, relativeShift).icon}}
+                {{resultOptions[getCurrentValue(worker, relativeShift)].icon}}
               </mat-icon>&nbsp;
             </div>
           </mat-select-trigger>
@@ -40,8 +37,4 @@
     </tr>
     </tbody>
   </table>
-
-  <section class="call-for-action">
-    <button mat-raised-button color="primary" (click)="submit()">Submit!</button>
-  </section>
 </form>

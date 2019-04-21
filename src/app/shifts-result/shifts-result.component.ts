@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AlgorithmService} from '../services/algorithm.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { StateService } from '../services/state.service';
 
 @Component({
   selector: 'app-shifts-result',
@@ -8,14 +8,36 @@ import {Router} from '@angular/router';
   styleUrls: ['./shifts-result.component.less']
 })
 export class ShiftsResultComponent implements OnInit {
+  result: number[][][];
+  shiftsData = {workers: 0, days: 0, shifts: 0};
+  names: string[];
 
-  isRunning = true;
-
-  constructor(private algorithmService: AlgorithmService, private router: Router) { }
-
-  ngOnInit() {
-    console.log(this.router.getCurrentNavigation().extras);
-    //this.algorithmService.runAlgorithm()
+  ngOnInit(): void {
+    this.result = this.stateService.getResult();
+    this.shiftsData = this.stateService.getShiftsData();
+    this.names = this.stateService.getNames();
   }
 
+  resultOptions = [
+    {value: false, icon: 'highlight_off', color: 'red'},
+    {value: true, icon: 'check_circle_outline', color: 'green'}
+  ];
+
+  days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+
+  getCurrentValue(worker: number, relativeShift: number) {
+    return this.result[worker][relativeShift / this.shiftsData.shifts][relativeShift % this.shiftsData.shifts]
+  }
+
+  constructor(private stateService: StateService,
+              private router: Router) {
+  }
 }
