@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { StateService } from './services/state.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent, LandingPageComponent],
@@ -26,7 +27,8 @@ import { StateService } from './services/state.service';
     MatIconModule,
     BrowserAnimationsModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    NgxSpinnerModule
   ],
   providers: [StateService],
   bootstrap: [AppComponent]
