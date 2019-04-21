@@ -61,7 +61,6 @@ export class ShiftsInputComponent implements OnInit {
 
       for (let j = 0; j < this.numberOfDays; j++) {
         for (let k = 0; k < this.numberOfShifts; k++) {
-          console.log(`shift-${i}-${j}-${k}`);
           this.shiftsInputForm.registerControl(`shift-${i}-${j}-${k}`, new FormControl(
             this.availabilities[0],
             Validators.required

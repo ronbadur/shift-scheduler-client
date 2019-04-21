@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatIconModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { StateService } from './services/state.service';
 
 @NgModule({
   declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent, LandingPageComponent],
@@ -27,7 +28,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     MatCardModule,
     MatButtonModule
   ],
-  providers: [],
+  providers: [StateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
