@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AlgorithmService} from '../services/algorithm.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -9,29 +10,14 @@ import {AlgorithmService} from '../services/algorithm.service';
 export class LandingPageComponent implements OnInit {
 
 
-  constructor(private algoritmService: AlgorithmService) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
   }
 
-  runAlgo() {
-    const constraints = {
-      constraints: [[[1000, 1000, 1000],
-        [1000, 1000, 1000],
-        [1000, 1000, 1000]],
-        [[1000, 1000, 1000],
-          [1000, 1000, 1000],
-          [1000, 1000, 1000]],
-        [[1000, 1000, 1000],
-          [1000, 1000, 1000],
-          [1000, 1000, 1000]]],
-      necessaryWorkers: 2};
-    this.algoritmService.runAlgorithm(constraints).then((res) => {
-      console.log(res);
-    }).catch((err) => {
-      console.log(err);
-    });
+  gettingStarted() {
+    this.router.navigate(['shifts-input']);
   }
 
 }

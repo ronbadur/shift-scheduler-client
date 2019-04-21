@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AlgorithmService} from '../services/algorithm.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-shifts-result',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShiftsResultComponent implements OnInit {
 
-  constructor() { }
+  isRunning = true;
+
+  constructor(private algorithmService: AlgorithmService, private router: Router) { }
 
   ngOnInit() {
+    console.log(this.router.getCurrentNavigation().extras);
+    //this.algorithmService.runAlgorithm()
   }
 
 }
