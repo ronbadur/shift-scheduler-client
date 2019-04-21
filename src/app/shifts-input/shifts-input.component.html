@@ -1,38 +1,75 @@
-<div class="container">
-  <div class="number-input-container">
-    <label>Insert Number Of Workers:</label>
-    <input type="number" value="1" min="1" class="number-of-inputs number-of-workers" [(ngModel)]="numberOfWorkers">
+<form class="container" [formGroup]="shiftsInputForm">
+  <div class="params">
+    <div class="number-input-container">
+      <mat-form-field>
+        <label>Insert Number Of Workers:</label>
+        <input type="number" matInput min="1" class="input number-of-workers"
+               formControlName="numberOfWorkers"
+               (change)="rebuildForm()" [(ngModel)]="numberOfWorkers">
+      </mat-form-field>
+    </div>
+    <div class="number-input-container">
+      <mat-form-field>
+        <label>Insert Number Of Days:</label>
+        <input type="number" matInput min="1" max="7" class="input number-of-days"
+               formControlName="numberOfDays" (change)="rebuildForm()" [(ngModel)]="numberOfDays">
+      </mat-form-field>
+    </div>
+    <div class="number-input-container">
+      <mat-form-field>
+        <label>Insert Number Of Shifts:</label>
+        <input type="number" matInput min="1" max="3" class="input number-of-shifts"
+               formControlName="numberOfShifts" (change)="rebuildForm()" [(ngModel)]="numberOfShifts">
+      </mat-form-field>
+    </div>
+    <div class="number-input-container">
+      <mat-form-field>
+        <label>Insert Number Of Necessary Workers Per Shift:</label>
+        <input type="number" matInput min="1" class="input number-of-necessary-workers-per-shift"
+               formControlName="numberOfNecessaryWorkersPerShift" (change)="rebuildForm()"
+               [(ngModel)]="numberOfNecessaryWorkersPerShift">
+      </mat-form-field>
+    </div>
   </div>
-  <div class="number-input-container">
-    <label>Insert Number Of Days:</label>
-    <input type="number" value="1" min="1" max="7" class="number-of-inputs number-of-days" [(ngModel)]="numberOfDays">
-  </div>
-  <div class="number-input-container">
-    <label>Insert Number Of Shifts:</label>
-    <input type="number" value="1" min="1" max="5" class="number-of-inputs number-of-shifts"
-           [(ngModel)]="numberOfShifts">
-  </div>
-  <div class="number-input-container">
-    <label>Insert Number Of Necessary Workers Per Shift:</label>
-    <input type="number" value="1" min="1" class="number-of-inputs number-of-necessary-workers-per-shift"
-           [(ngModel)]="numberOfNecessaryWorkersPerShift">
-  </div>
-
   <table class="data-input">
     <thead>
+    <th></th>
+    <th *ngFor="let i of [].constructor(numberOfDays); index as currentDay" [attr.colspan]="numberOfShifts"
+        class="day-header">
+      {{days[currentDay]}}
+    </th>
+    </thead>
+    <thead>
+    <th>Name</th>
     <th *ngFor="let i of [].constructor(numberOfDays * numberOfShifts); index as index">
-      {{(index % numberOfDays) + 1}}
+      {{(index % numberOfShifts) + 1}}
     </th>
     </thead>
     <tbody>
-    <tr *ngFor="let i of [].constructor(numberOfWorkers)">
-      <td *ngFor="let i of [].constructor(numberOfDays * numberOfShifts); index as index">
+    <tr *ngFor="let i of [].constructor(numberOfWorkers); index as worker">
+      <td>
+        <mat-form-field>
+          <input matInput class="input name-input" type="text">
+        </mat-form-field>
+      </td>
+      <td *ngFor="let j of [].constructor(numberOfDays * numberOfShifts); index as relativeShift"
+          class="{{getShiftString(worker, relativeShift)}}">
+        <mat-select formControlName="{{getShiftString(worker, relativeShift)}}">
+          <mat-select-trigger>
+            <div class="{{getCurrentValue(worker, relativeShift).color}}">
+              <mat-icon>
+                {{getCurrentValue(worker, relativeShift).icon}}
+              </mat-icon>&nbsp;
+            </div>
+          </mat-select-trigger>
+          <mat-option *ngFor="let availability of availabilities" [value]="availability">
+            <div class="{{availability.color}}">
+              <mat-icon>{{availability.icon}}</mat-icon>
+            </div>
+          </mat-option>
+        </mat-select>
       </td>
     </tr>
     </tbody>
-    <!--<div *ngFor="let i of [].constructor(numberOfWorkers)">-->
-    <!--<div class="worker-data-container">-->
-    <!--</div>-->
-    <!--</div>-->
   </table>
-</div>
+</form>
