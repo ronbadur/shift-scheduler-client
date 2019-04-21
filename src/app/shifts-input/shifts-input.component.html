@@ -49,7 +49,7 @@
     <tr *ngFor="let i of [].constructor(numberOfWorkers); index as worker">
       <td>
         <mat-form-field>
-          <input matInput class="input name-input" type="text">
+          <input formControlName="{{'worker-' + worker}}" matInput class="input name-input" type="text">
         </mat-form-field>
       </td>
       <td *ngFor="let j of [].constructor(numberOfDays * numberOfShifts); index as relativeShift"
@@ -72,4 +72,6 @@
     </tr>
     </tbody>
   </table>
+
+  <button (click)="submit()"></button>
 </form>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlgorithmService } from '../services/algorithm.service';
+import { StateService } from '../services/state.service';
 
 @Component({
   selector: 'app-shifts-input',
@@ -34,7 +36,9 @@ export class ShiftsInputComponent implements OnInit {
     'Saturday'
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private algorithmService: AlgorithmService,
+              private stateService: StateService) {
     this.rebuildForm();
   }
 
@@ -50,6 +54,11 @@ export class ShiftsInputComponent implements OnInit {
     });
 
     for (let i = 0; i < this.numberOfWorkers; i++) {
+      this.shiftsInputForm.registerControl(`worker-${i}`, new FormControl(
+        '',
+        Validators.required
+      ));
+
       for (let j = 0; j < this.numberOfDays; j++) {
         for (let k = 0; k < this.numberOfShifts; k++) {
           console.log(`shift-${i}-${j}-${k}`);
@@ -71,5 +80,69 @@ export class ShiftsInputComponent implements OnInit {
     const shift = relativeShift % this.numberOfShifts;
 
     return `shift-${worker}-${Math.floor(day)}-${shift}`;
+  }
+
+  submit() {
+    const formValue = this.shiftsInputForm.getRawValue();
+
+    this.algorithmService.runAlgorithm({
+      constraints: this.extractConstraints(formValue),
+      necessaryWorkers: this.numberOfNecessaryWorkersPerShift
+    }).then((res) => {
+      console.log(res);
+
+      this.stateService.setNames(Object.keys(formValue).filter(key => key.startsWith('worker-')).map(key => formValue[key]));
+      this.stateService.setResult(res);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  private extractConstraints(formValue) {
+    const constraints = this.generateConstraintsMock(this.numberOfWorkers, this.numberOfDays, this.numberOfShifts);
+
+    for (const key in formValue) {
+      if (formValue.hasOwnProperty(key)) {
+        if (key.startsWith('shift-')) {
+          const shiftData = this.extractShiftDataFromString(key);
+
+          constraints[shiftData.worker][shiftData.day][shiftData.shift] = formValue[key].value;
+        }
+      }
+    }
+
+    return constraints;
+  }
+
+  private extractShiftDataFromString(shiftString: string) {
+    shiftString = shiftString.substring(6);
+
+    const worker = shiftString.substring(0, shiftString.indexOf('-'));
+    shiftString = shiftString.substring(shiftString.indexOf('-') + 1);
+
+    const day = shiftString.substring(0, shiftString.indexOf('-'));
+    shiftString = shiftString.substring(shiftString.indexOf('-') + 1);
+
+    return {
+      worker,
+      day,
+      shift: shiftString
+    };
+  }
+
+  private generateConstraintsMock(workers, days, shifts) {
+    const constraintsMock: number[][][] = [];
+
+    for (let i = 0; i < workers; i++) {
+      constraintsMock.push([]);
+      for (let j = 0; j < days; j++) {
+        constraintsMock[i].push([]);
+        for (let k = 0; k < shifts; k++) {
+          constraintsMock[i][j].push(1000);
+        }
+      }
+    }
+
+    return constraintsMock;
   }
 }
