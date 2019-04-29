@@ -52,7 +52,6 @@ export class ShiftsInputComponent implements OnInit {
   public rebuildForm() {
     this.shiftsInputForm = this.formBuilder.group({
       numberOfWorkers: [this.numberOfWorkers, Validators.compose([Validators.min(1), Validators.required])],
-      numberOfDays: [this.numberOfDays, Validators.compose([Validators.min(1), Validators.max(7), Validators.required])],
       numberOfShifts: [this.numberOfShifts, Validators.compose([Validators.min(1), Validators.max(3), Validators.required])],
       numberOfNecessaryWorkersPerShift: [this.numberOfNecessaryWorkersPerShift, Validators.compose([Validators.min(1), Validators.required])]
     });
