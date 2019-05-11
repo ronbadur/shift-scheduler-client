@@ -3,76 +3,123 @@
     <div class="number-input-container">
       <mat-form-field>
         <label>Workers:</label>
-        <input type="number" matInput min="1" class="input number-of-workers"
-               formControlName="numberOfWorkers"
-               (change)="rebuildForm()" [(ngModel)]="numberOfWorkers">
+        <input
+          type="number"
+          matInput
+          min="1"
+          class="input number-of-workers"
+          formControlName="numberOfWorkers"
+          (change)="rebuildForm()"
+        />
       </mat-form-field>
     </div>
     <div class="number-input-container">
       <mat-form-field>
         <label>Shifts:</label>
-        <input type="number" matInput min="1" max="3" class="input number-of-shifts"
-               formControlName="numberOfShifts" (change)="rebuildForm()" [(ngModel)]="numberOfShifts">
+        <input
+          type="number"
+          matInput
+          min="1"
+          max="3"
+          class="input number-of-shifts"
+          formControlName="numberOfShifts"
+          (change)="rebuildForm()"
+        />
       </mat-form-field>
     </div>
     <div class="number-input-container">
       <mat-form-field>
         <label>Workers Per Shift:</label>
-        <input type="number" matInput min="1" class="input number-of-necessary-workers-per-shift"
-               formControlName="numberOfNecessaryWorkersPerShift" (change)="rebuildForm()"
-               [(ngModel)]="numberOfNecessaryWorkersPerShift">
+        <input
+          type="number"
+          matInput
+          min="1"
+          class="input number-of-necessary-workers-per-shift"
+          formControlName="numberOfNecessaryWorkersPerShift"
+          (change)="rebuildForm()"
+        />
       </mat-form-field>
     </div>
   </div>
 
   <section class="call-for-action">
-    <button mat-raised-button color="primary" (click)="submit()">Submit!</button>
+    <button mat-raised-button color="primary" (click)="submit()">
+      Submit!
+    </button>
   </section>
 
-  <table class="data-input">
+  <table class="data-input" border="1" *ngIf="!(isRebuilding | async)">
     <thead>
-    <th></th>
-    <th *ngFor="let i of [].constructor(numberOfDays); index as currentDay" [attr.colspan]="numberOfShifts"
-        class="day-header">
-      {{days[currentDay]}}
-    </th>
+      <th></th>
+      <th
+        *ngFor="let i of [].constructor(numberOfDays); index as currentDay"
+        [attr.colspan]="numberOfShifts"
+        class="day-header"
+      >
+        {{ days[currentDay] }}
+      </th>
     </thead>
     <thead>
-    <th>Name</th>
-    <th *ngFor="let i of [].constructor(numberOfDays * numberOfShifts); index as index">
-      {{(index % numberOfShifts) + 1}}
-    </th>
+      <th>Name</th>
+      <th
+        *ngFor="
+          let i of [].constructor(numberOfDays * numberOfShifts);
+          index as index
+        "
+      >
+        {{ (index % numberOfShifts) + 1 }}
+      </th>
     </thead>
     <tbody>
-    <tr *ngFor="let i of [].constructor(numberOfWorkers); index as worker">
-      <td>
-        <mat-form-field>
-          <input formControlName="{{'worker-' + worker}}" matInput class="input name-input" type="text">
-        </mat-form-field>
-      </td>
-      <td *ngFor="let j of [].constructor(numberOfDays * numberOfShifts); index as relativeShift"
-          class="{{getShiftString(worker, relativeShift)}}">
-        <mat-select formControlName="{{getShiftString(worker, relativeShift)}}">
-          <mat-select-trigger>
-            <div class="{{getCurrentValue(worker, relativeShift).color}}">
-              <mat-icon>
-                {{getCurrentValue(worker, relativeShift).icon}}
-              </mat-icon>&nbsp;
-            </div>
-          </mat-select-trigger>
-          <mat-option *ngFor="let availability of availabilities" [value]="availability">
-            <div class="{{availability.color}}">
-              <mat-icon>{{availability.icon}}</mat-icon>
-            </div>
-          </mat-option>
-        </mat-select>
-      </td>
-    </tr>
+      <tr *ngFor="let i of [].constructor(numberOfWorkers); index as worker">
+        <td>
+          <mat-form-field>
+            <input
+              formControlName="{{ 'worker-' + worker }}"
+              matInput
+              class="input name-input"
+              type="text"
+            />
+          </mat-form-field>
+        </td>
+        <td
+          *ngFor="
+            let j of [].constructor(numberOfDays * numberOfShifts);
+            index as relativeShift
+          "
+          class="{{ getShiftString(worker, relativeShift) }}"
+        >
+          <mat-select
+            formControlName="{{ getShiftString(worker, relativeShift) }}"
+          >
+            <mat-select-trigger>
+              <div class="{{ getCurrentValue(worker, relativeShift).color }}">
+                <mat-icon>{{
+                  getCurrentValue(worker, relativeShift).icon
+                }}</mat-icon
+                >&nbsp;
+              </div>
+            </mat-select-trigger>
+            <mat-option
+              *ngFor="let availability of availabilities"
+              [value]="availability"
+            >
+              <div class="{{ availability.color }}">
+                <mat-icon>{{ availability.icon }}</mat-icon>
+              </div>
+            </mat-option>
+          </mat-select>
+        </td>
+      </tr>
     </tbody>
   </table>
 </form>
 <div class="loading-container">
-  <ngx-spinner [fullScreen]="true" type="ball-clip-rotate-multiple" size="large">
+  <ngx-spinner
+    [fullScreen]="true"
+    type="ball-clip-rotate-multiple"
+    size="large"
+  >
     <p class="loading">Scheduling Shifts...</p>
   </ngx-spinner>
 </div>
