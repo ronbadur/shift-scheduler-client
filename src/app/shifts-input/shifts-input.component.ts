@@ -1,65 +1,73 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators
-} from "@angular/forms";
-import { AlgorithmService } from "../services/algorithm.service";
-import { StateService } from "../services/state.service";
-import { Router } from "@angular/router";
-import { NgxSpinnerService } from "ngx-spinner";
-import { BehaviorSubject, Observable } from "rxjs";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlgorithmService } from '../services/algorithm.service';
+import { StateService } from '../services/state.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
-  selector: "app-shifts-input",
-  templateUrl: "./shifts-input.component.html",
-  styleUrls: ["./shifts-input.component.less"],
+  selector: 'app-shifts-input',
+  templateUrl: './shifts-input.component.html',
+  styleUrls: ['./shifts-input.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShiftsInputComponent implements OnInit {
   numberOfWorkers = 0;
   numberOfDays = 0;
   numberOfShifts = 0;
-  numberOfNecessaryWorkersPerShift = 0;
+  numberOfNecessaryWorkersPerShift = 2;
 
   shiftsInputForm: FormGroup;
 
   availabilities = [
-    { value: 1000, icon: "check_circle_outline", color: "green" },
-    { value: 100, icon: "help_outline", color: "faded-green" },
-    { value: 10, icon: "help_outline", color: "orange" },
-    { value: 1, icon: "highlight_off", color: "red" }
+    {value: 1000, icon: 'check_circle_outline', color: 'green'},
+    {value: 100, icon: 'help_outline', color: 'faded-green'},
+    {value: 10, icon: 'help_outline', color: 'orange'},
+    {value: 1, icon: 'highlight_off', color: 'red'}
   ];
 
   days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
   ];
 
-  private _isRebuilding: BehaviorSubject<boolean> = new BehaviorSubject<
-    boolean
-  >(false);
-  public isRebuilding: Observable<boolean> = this._isRebuilding.asObservable();
+  private isRebuildingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isRebuilding: Observable<boolean> = this.isRebuildingSubject.asObservable();
 
   constructor(
     private formBuilder: FormBuilder,
     private algorithmService: AlgorithmService,
     private stateService: StateService,
     private router: Router,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute
   ) {
-    this.buildForm();
-    this.rebuildForm();
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(queryParams => {
+      if (queryParams && queryParams.paramsInput) {
+        try {
+          const paramsInput = JSON.parse(queryParams.paramsInput);
 
+          this.numberOfWorkers = paramsInput.numberOfWorkers;
+          this.numberOfDays = paramsInput.numberOfDays;
+          this.numberOfShifts = paramsInput.numberOfShifts;
+          this.numberOfNecessaryWorkersPerShift = paramsInput.numberOfNecessaryWorkersPerShift;
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      this.buildForm();
+      this.rebuildForm();
+    });
   }
 
   private buildForm() {
@@ -84,15 +92,11 @@ export class ShiftsInputComponent implements OnInit {
   }
 
   public rebuildForm() {
-    this._isRebuilding.next(true);
+    this.isRebuildingSubject.next(true);
 
-    this.numberOfWorkers = this.shiftsInputForm.getRawValue()[
-      "numberOfWorkers"
-    ];
-    this.numberOfShifts = this.shiftsInputForm.getRawValue()["numberOfShifts"];
-    this.numberOfNecessaryWorkersPerShift = this.shiftsInputForm.getRawValue()[
-      "numberOfNecessaryWorkersPerShift"
-    ];
+    this.numberOfWorkers = this.shiftsInputForm.getRawValue()['numberOfWorkers'];
+    this.numberOfShifts = this.shiftsInputForm.getRawValue()['numberOfShifts'];
+    this.numberOfNecessaryWorkersPerShift = this.shiftsInputForm.getRawValue()['numberOfNecessaryWorkersPerShift'];
 
     for (let i = 0; i < this.numberOfWorkers; i++) {
       this.shiftsInputForm.registerControl(
@@ -110,13 +114,13 @@ export class ShiftsInputComponent implements OnInit {
       }
     }
 
-    this._isRebuilding.next(false);
+    this.isRebuildingSubject.next(false);
   }
 
   getCurrentValue(worker, relativeShift) {
     return this.shiftsInputForm.getRawValue()[
       this.getShiftString(worker, relativeShift)
-    ];
+      ];
   }
 
   getShiftString(worker, relativeShift) {
@@ -141,7 +145,7 @@ export class ShiftsInputComponent implements OnInit {
 
         this.stateService.setNames(
           Object.keys(formValue)
-            .filter(key => key.startsWith("worker-"))
+            .filter(key => key.startsWith('worker-'))
             .map(key => formValue[key])
         );
         this.stateService.setShiftsData({
@@ -151,7 +155,7 @@ export class ShiftsInputComponent implements OnInit {
         });
         this.stateService.setResult(res.data);
 
-        this.router.navigate(["shifts-result"]);
+        this.router.navigate(['shifts-result']);
       })
       .catch(err => {
         console.log(err);
@@ -167,7 +171,7 @@ export class ShiftsInputComponent implements OnInit {
 
     for (const key in formValue) {
       if (formValue.hasOwnProperty(key)) {
-        if (key.startsWith("shift-")) {
+        if (key.startsWith('shift-')) {
           const shiftData = this.extractShiftDataFromString(key);
 
           constraints[shiftData.worker][shiftData.day][shiftData.shift] =
@@ -182,11 +186,11 @@ export class ShiftsInputComponent implements OnInit {
   private extractShiftDataFromString(shiftString: string) {
     shiftString = shiftString.substring(6);
 
-    const worker = shiftString.substring(0, shiftString.indexOf("-"));
-    shiftString = shiftString.substring(shiftString.indexOf("-") + 1);
+    const worker = shiftString.substring(0, shiftString.indexOf('-'));
+    shiftString = shiftString.substring(shiftString.indexOf('-') + 1);
 
-    const day = shiftString.substring(0, shiftString.indexOf("-"));
-    shiftString = shiftString.substring(shiftString.indexOf("-") + 1);
+    const day = shiftString.substring(0, shiftString.indexOf('-'));
+    shiftString = shiftString.substring(shiftString.indexOf('-') + 1);
 
     return {
       worker,
