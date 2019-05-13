@@ -18,10 +18,10 @@ import { BehaviorSubject, Observable } from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShiftsInputComponent implements OnInit {
-  numberOfWorkers = 7;
-  numberOfDays = 7;
-  numberOfShifts = 3;
-  numberOfNecessaryWorkersPerShift = 2;
+  numberOfWorkers = 0;
+  numberOfDays = 0;
+  numberOfShifts = 0;
+  numberOfNecessaryWorkersPerShift = 0;
 
   shiftsInputForm: FormGroup;
 
@@ -58,7 +58,9 @@ export class ShiftsInputComponent implements OnInit {
     this.rebuildForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
   private buildForm() {
     this.shiftsInputForm = this.formBuilder.group({

@@ -17,7 +17,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   gettingStarted() {
-    this.router.navigate(['shifts-input']);
+    this.router.navigate(['params-input']);
   }
 
 }

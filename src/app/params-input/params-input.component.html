@@ -1,0 +1,25 @@
+<form>
+<div class="params">
+  <div class="number-input-container">
+    <mat-form-field>
+      <label>Workers:</label>
+      <input type="number" matInput min="1" class="input number-of-workers" formControlName="numberOfWorkers"
+        (change)="rebuildForm()" />
+    </mat-form-field>
+  </div>
+  <div class="number-input-container">
+    <mat-form-field>
+      <label>Shifts:</label>
+      <input type="number" matInput min="1" max="3" class="input number-of-shifts" formControlName="numberOfShifts"
+        (change)="rebuildForm()" />
+    </mat-form-field>
+  </div>
+  <div class="number-input-container">
+    <mat-form-field>
+      <label>Workers Per Shift:</label>
+      <input type="number" matInput min="1" class="input number-of-necessary-workers-per-shift"
+        formControlName="numberOfNecessaryWorkersPerShift" (change)="rebuildForm()" />
+    </mat-form-field>
+  </div>
+</div>
+</form>

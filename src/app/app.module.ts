@@ -11,9 +11,10 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ParamsInputComponent } from './params-input/params-input.component';
 
 @NgModule({
-  declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent, LandingPageComponent],
+  declarations: [AppComponent, ShiftsInputComponent, ShiftsResultComponent, LandingPageComponent, ParamsInputComponent],
   imports: [
     BrowserModule,
     CommonModule,
